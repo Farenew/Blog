@@ -1,0 +1,307 @@
+---
+date: '2018-02-10'
+title: 统计假设检验(statistical hypothesis testing) II
+author: ForenewHan
+
+tags: ["理论"]
+categories: ["数学"]
+
+math: true
+
+slug: statistical_hypothesis_testing_II
+
+---
+
+
+
+<div class="section level1">
+<h1>1. 检验的分类</h1>
+<blockquote>
+<p>对于检验来讲，有着不同的分类方法。</p>
+<p>比如按照样本数分类，可以分为单样本检验，双样本检验，成对样本检验等。</p>
+<p>比如按照检验的对象，可以分为对均值的检验，对方差的检验，对比例的检验等。</p>
+<p>比如按照总体分布来区分，可以分为对正态总体做检验，对伯努利分布做检验等，或者在总体分布未知的情况下的检验。</p>
+</blockquote>
+<p>对于不同的问题，要使用不同的检验方法。在R语言的stats package中，提供了多达33种不同的检验方法。使用<code>lsf.str(&quot;package:stats&quot;)</code>可以查看stats中的函数，这里对其中的部分检验方法简单介绍下：</p>
+<ul>
+<li><code>ansari.test</code>，Ansari–Bradley检验, 对双样本的标准差的区别检验。<span class="math inline">\(\gamma = Var(x) / Var(Y)\)</span>，零假设是<span class="math inline">\(\gamma\)</span>等于1</li>
+<li><code>bartlett.test</code>，Bartlett检验，检验是否k个样本有相同的标准差。</li>
+<li><code>binom.test</code>，伯努利检验，用在很多的情况下，最常用的是检验两组样本发生概率是否相同(比如硬币的正反面)。特别用在关于比例的检验上，很多问题都可以归约成伯努利检验。</li>
+<li><code>Box.test</code>，Ljung–Box检验，用来检测一组时间序列的自相关函数是否与0不同，它根据多个滞后时间来测试总体的随机性。</li>
+<li><code>chisq.test</code>，卡方检验<span class="math inline">\(\chi^2 \; test\)</span>，也是一个很重要的检验手段，用在很多方面。比如根据频率检测两组样本是否相互独立;或者检验原分布是否为卡方分布。</li>
+<li><code>cor.test</code>, 相关性测试，对成对样本的相关性的测试，可以使用多种测试方法。</li>
+<li><code>fisher.test</code>，Fisher精确检验，用来检验一个table中行和列是否相互独立。</li>
+<li><code>fligner.test</code>，Fligner Killeen检验，用于检验两组分布方差是否相同。</li>
+<li><code>friedman.test</code>,<code>quade.test</code> 略</li>
+<li><code>kruskal.test</code>，Kruskal-Wallis检验，在不假设总体分布的情况下，检验它们是否相互独立。</li>
+<li><code>ks.test</code>，Kolmogorov–Smirnov检验，用来检验两个数据是否显著不同，ks检验是非参数检验，不需要指定样本的分布。它可以是单样本（与参考概率分布相比较），也可以是双样本。</li>
+<li><code>mood.test</code>, Mood’s Median检验，属于非参数检验，基本上是符号检验（Sign Test）的双样本或多样本版本，用在检测两个独立样本的中值是否相等。</li>
+<li><code>oneway.test</code>, 也叫one-way ANOVA，用来分析来自正态分布的两个或多个样本的均值是否相当(不需要知道方差)</li>
+<li><code>poisson.test</code>, possion检验，对possion分布里的比例参数做假设检验。</li>
+<li><code>prop.test</code>，用来检验几组样本中，成功的概率(或比例)是否相同。或者有特定值相同。</li>
+<li><code>shapiro.test</code>，Shapiro–Wilk检验，用来判断样本是否为正态分布。</li>
+<li><code>t.test</code>，t检验，几乎是最重要也是最常用的检验，常用在检验样本均值。当标准差已知的时候，会使用z检验。</li>
+<li><code>wilcox.test</code>，Wilcoxon符号秩检验。常用的非参数统计假设检验，和t检验类似。但当原分布未知的时候使用。</li>
+</ul>
+<p>这里用一张图，来说明一下常用的检验的一般流程。</p>
+<div id="proceduce_in_test" class="section level2">
+<h2><img src="/img/programming/test_procedure.jpg" alt="proceduce_in_test" /></h2>
+</div>
+</div>
+<div class="section level1">
+<h1>2. 几种常用的传统检验</h1>
+<p>这里的例子都引自吴喜之老师的书<统计学:从数据到结论>。</p>
+<div class="section level2">
+<h2>2.1 对于正态均值的检验</h2>
+<div class="section level3">
+<h3>2.1.1 单样本正态均值检验</h3>
+<blockquote>
+<p>监管部门称了50包标有500g重的红糖，均值为498.35g，少于500g。</p>
+</blockquote>
+<p>由均值，怀疑是否够分量，这里就可以做统计检验。因为厂家声称每袋重500g，因此零假设为总体均值等于500g。正好是我们要检验的内容。因为怀疑每袋的重量小于500g，所以备选假设定为总体均值小于500g。（也就是单侧检验，这里是left tailed）</p>
+<ul>
+<li><span class="math inline">\(H_0: \; \mu = 500\)</span></li>
+<li><span class="math inline">\(H_1: \; \mu &lt; 500\)</span></li>
+</ul>
+<p>这里的样本量比较大，但总体均值未知。因此使用t检验。</p>
+<pre class="r"><code>x = scan(&quot;sugar.txt&quot;)
+t.test(x, mu = 500, alternative = &quot;less&quot;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  x
+## t = -2.6962, df = 49, p-value = 0.004793
+## alternative hypothesis: true mean is less than 500
+## 95 percent confidence interval:
+##      -Inf 499.3749
+## sample estimates:
+## mean of x 
+##  498.3472</code></pre>
+<p>这里t值为<span class="math inline">\(-2.6962\)</span>，而p值为<span class="math inline">\(0.004793\)</span>，如果选择显著性水平(<span class="math inline">\(\alpha\)</span>)为0.005，那么拒绝错误的概率为0.005。这是个很小的概率，属于小概率事件。</p>
+<p>对于这个例子来说，也就是说，认为产品均值小于500g犯错的概率为0.005，也就是说认为产品均值小于500g基本上是没错的。</p>
+<p>在图中看一下t值的位置: <img src="/programming/statistical_hypothesis_testing_II_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>可以看出来，t统计量取值在一个非常小概率的位置。左侧尾概率是一个小概率。</p>
+</div>
+<div class="section level3">
+<h3>2.1.2 检验区间</h3>
+<p>上一个例子中，采用了单尾检验(left tailed)。这是因为这个问题只关心小于的部分。实际中，可以根据大于，小于，不等于三个问题把检验分为三种情况:</p>
+<ul>
+<li>备选假设为小于，那么选择左侧检验(left tailed test)</li>
+<li>备选假设为大于，那么选择右侧检验(right tailed test)</li>
+<li>备选假设不等于，那么选择双侧检验(two tailed test)</li>
+</ul>
+</div>
+<div class="section level3">
+<h3>2.1.3 双样本正态均值检验</h3>
+<blockquote>
+<p>为检验某种药物的影响，对处理组的100名人员和对照组的150名人员检验某种指标。</p>
+</blockquote>
+<p>对这个问题中指标的检验，就相当于是双样本的正态均值检验。比如问题是处理组的总体均值<span class="math inline">\(\mu_1\)</span>是否大于对照组的总体均值<span class="math inline">\(\mu_2\)</span>。</p>
+<ul>
+<li><span class="math inline">\(H_0: \; \mu_1 = \mu_2\)</span></li>
+<li><span class="math inline">\(H_1: \; \mu &gt; \mu_2\)</span></li>
+</ul>
+<p>或者也可以写成:</p>
+<ul>
+<li><span class="math inline">\(H_0: \; \mu_1 - \mu_2 = 0\)</span></li>
+<li><span class="math inline">\(H_1: \; \mu_1 - \mu_2 &gt; 0\)</span></li>
+</ul>
+<pre class="r"><code>dt = read.table(&quot;drug.txt&quot;, header = T)
+x = dt[dt$X1==1,1]
+y = dt[dt$X1==2,1]
+t.test(x, y, alternative = &quot;greater&quot;)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  x and y
+## t = 0.94456, df = 231.72, p-value = 0.1729
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  -0.3742108        Inf
+## sample estimates:
+## mean of x mean of y 
+##   8.60202   8.10200</code></pre>
+<p>可以看出，结果中，p值为0.1729，不能明显拒绝两个均值相等的零假设。</p>
+</div>
+<div class="section level3">
+<h3>2.1.4 成对样本的检验</h3>
+<p>例如给出50个人减肥前和减肥后的体重。这样的数据就属于成对样本。如果使用<code>t.test(x, y, alternative = &quot;greater&quot;)</code>这样的检验就不行，因为x和y并不是相互独立的。很显然，减肥前体重和减肥后的体重是相关的。因此如果这样计算就会得到错误的结果。</p>
+<p>实际上应该利用每个人是相互独立的，来得到单样本进行计算。即用减肥后的体重减去减肥前的体重，对这一差值做检验: <code>t.test(x-y, alternative = &quot;greater&quot;)</code>.但这样检验实际上是对<span class="math inline">\(\mu=0\)</span>做的比较。在R的检验里提供了成对样本的选项，可以更加方便地直接使用参数控制。</p>
+<p>比如需要检验减肥前的体重大于减肥后的体重：</p>
+<pre class="r"><code>t.test(w$before, w$after, alternative = &quot;greater&quot;, paired = TRUE)</code></pre>
+</div>
+</div>
+<div class="section level2">
+<h2>2.2 关于比例的检验</h2>
+<div class="section level3">
+<h3>2.2.1 关于总体比例的检验</h3>
+<blockquote>
+<p>对某个电视节目，调查显示，被访问的1500人中有23%的收视率。现在想知道这是否和所期望的25%显著不足。</p>
+</blockquote>
+<p>通过图可以看出，此处应该使用z检验。所谓z检验，指的是在n很大的情况下的大样本的正态近似。z值为<span class="math inline">\(z = \frac{\hat{p}-p_0}{\sqrt{\frac{p_0(1-P_0)}{n}}}\)</span>。在R中使用的是<code>prop.test</code>，是在基于z值的修正下做的z检验。</p>
+<p>但在计算机时代，完全不必要做这样的假设，可以直接做精确的计算。</p>
+<p>对于这个问题，即伯努利检验，使用r中的<code>binom.test</code>:</p>
+<pre class="r"><code>binom.test(0.23*1500, 1500, p = 0.25, alternative = &quot;less&quot;)</code></pre>
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  0.23 * 1500 and 1500
+## number of successes = 345, number of trials = 1500, p-value =
+## 0.03837
+## alternative hypothesis: true probability of success is less than 0.25
+## 95 percent confidence interval:
+##  0.0000000 0.2485905
+## sample estimates:
+## probability of success 
+##                   0.23</code></pre>
+<p>如果选定<span class="math inline">\(\alpha\)</span>为0.05，那么就有足够的理由拒绝零假设。即可以认为收视率小于25%。</p>
+</div>
+<div class="section level3">
+<h3>2.2.2 关于总体比例的双样本检验</h3>
+<p>在<code>binom.test</code>中，如果是双样本的比较，那么可以用向量。比如对两个节目的收视率比较，调查观众1200人，A节目收视率为20%，调查观众1300人，B节目收视率为21%，是否可以认为A节目收视率比B节目低：</p>
+<pre class="r"><code>binom.test(c(0.2*1200, 0.21*1300), c(1200, 1300), alternative = &quot;less&quot;)</code></pre>
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  c(0.2 * 1200, 0.21 * 1300)
+## number of successes = 240, number of trials = 513, p-value =
+## 0.07882
+## alternative hypothesis: true probability of success is less than 0.5
+## 95 percent confidence interval:
+##  0.0000000 0.5051157
+## sample estimates:
+## probability of success 
+##              0.4678363</code></pre>
+<hr />
+</div>
+</div>
+</div>
+<div class="section level1">
+<h1>3. 非参数检验</h1>
+<div class="section level2">
+<h2>3.1 非参数检验的介绍</h2>
+<p>传统的检验方法都假定了背景的分布，基于已有的分布来判断样本概率。而非参数检验是指在样本背景分布未知的情况下做的判断。比如Fisher精确检验，连续变量比例的检验，pearson <span class="math inline">\(\chi^2\)</span>检验和似然比<span class="math inline">\(\chi^2\)</span>检验都属于非参数检验。</p>
+<p>非参数检验中常用到的一个概念是秩(rank)，秩指的是样本数据按照升幂排列之后，每个观测值的位置。比如：</p>
+<p><span class="math display">\[ 15\;\;9\;\;18\;\;3\;\;17\;\;8\;\;5\;\;13\;\;7\;\;19\]</span></p>
+<p>经过升幂排列后，为</p>
+<p><span class="math display">\[3\;\;5\;\;7\;\;8\;\;9\;\;13\;\;15\;\;17\;\;18\;\;19\]</span></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">观测值</th>
+<th>3</th>
+<th>5</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>13</th>
+<th>15</th>
+<th>17</th>
+<th>18</th>
+<th>19</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">秩</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>如果有重复，就取平均，比如1，2，2，3。那么秩就为1，2.5，2.5，4。</p>
+</div>
+<div class="section level2">
+<h2>3.2 单样本位置的符号检验</h2>
+<div class="section level3">
+<h3>3.2.1 符号检验的示例</h3>
+<blockquote>
+<p>对某商店的西洋参进行抽查，对25包标有净重100g的西洋参片称重。怀疑其分量不足。</p>
+</blockquote>
+<p>这个问题，就相当于对样本的中位数进行检验。如果是正态分布或者是t分布这样的对称分布，那么中位数就相当于是均值。这里类似的，做符号检验(sign test)：</p>
+<ul>
+<li><span class="math inline">\(H_0：\; m = 100\)</span></li>
+<li><span class="math inline">\(H_1：\; m &lt; 100\)</span></li>
+</ul>
+<p>按照零假设，每个观测值小于100的概率都是50%。也就是服从二项分布：</p>
+<pre class="r"><code>x = scan(&quot;gs.txt&quot;)
+# 方法一
+pbinom(sum(x&gt;100), 25, 0.5)</code></pre>
+<pre><code>## [1] 0.05387607</code></pre>
+<pre class="r"><code># 或者是
+binom.test(sum(x&gt;100), 25, 0.5, alternative = &quot;less&quot;)</code></pre>
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  sum(x &gt; 100) and 25
+## number of successes = 8, number of trials = 25, p-value = 0.05388
+## alternative hypothesis: true probability of success is less than 0.5
+## 95 percent confidence interval:
+##  0.0000000 0.5036416
+## sample estimates:
+## probability of success 
+##                   0.32</code></pre>
+<p>大于零假设中中位数<span class="math inline">\(m_0\)</span>的值的个数等于所有观测值减去<span class="math inline">\(m_0\)</span>所得符号为正的个数，而小于的则为符号为负的个数。因此称其为符号检验(sign test)</p>
+</div>
+<div class="section level3">
+<h3>3.2.2 符号检验的一般流程</h3>
+<p>符号检验的一般流程是这样的。对于大小为n的样本，观测值为<span class="math inline">\(x_1,x_2,x_3...,x_n\)</span>，零假设为样本中位数等于某个值M。假设<span class="math inline">\(r^+\)</span>表示观测值中大于M的值而<span class="math inline">\(r^-\)</span>表示观测值中小于M的值，等于M的值可以忽略，那么<span class="math inline">\(r^+\)</span>与<span class="math inline">\(r^-\)</span>的和记作<span class="math inline">\(n&#39;\)</span></p>
+<p>零假设下，那么应该有<span class="math inline">\(r^+\)</span>与<span class="math inline">\(r^-\)</span>的值相等，遵循<span class="math inline">\(p=\frac{1}{2}\)</span>的二项分布。</p>
+<p>检验的流程：</p>
+<ul>
+<li>选择<span class="math inline">\(r = max(r^+,r^-)\)</span></li>
+<li>观测在r值的情况下，<span class="math inline">\(p=\frac{1}{2}\)</span>的二项分布的概率。如果是单侧检验，那么这个值就是p值。如果是双侧检验，该值乘2即为p值。即在上一部分示例中的方法1。</li>
+</ul>
+</div>
+</div>
+<div id="wilcoxon" class="section level2">
+<h2>3.3 Wilcoxon符号检验</h2>
+<div id="wilcoxon" class="section level3">
+<h3>3.3.1 单样本位置的Wilcoxon符号检验</h3>
+<p>可以看出，在符号检验中，仅用到了大于中位数和小于中位数的情况，而差的绝对值的秩的大小并没有使用。如果结合秩的大小，那么检验效果自然更加有效。也就是Wilcoxon符号秩检验(Wilcoxon signed-rank test)的宗旨。</p>
+<p>Wilcoxon符号秩检验和符号检验的思路类似，只不过按照秩做了加权。做法如下：</p>
+<p>对<span class="math inline">\(|x_i-m_0|\)</span>做排序，然后把<span class="math inline">\(x_i-m_0\)</span>的符号加到秩上面。 对带符号的秩求和，即得到<span class="math inline">\(W^-\)</span>和<span class="math inline">\(W^+\)</span>，和符号检验中的么<span class="math inline">\(r^+\)</span>，<span class="math inline">\(r^-\)</span>类似。</p>
+<p>在R中，只需要使用<code>wilcox.test</code>即可。</p>
+</div>
+<div id="wilcoxon" class="section level3">
+<h3>3.3.2 双样本的Wilcoxon检验</h3>
+<p>Wilcoxon检验和t检验用法很类似。也可以用在检测两个未知分布的样本中位数是否相等。语法和t检验也相同：<code>wilcox.test(x.y,alternative = &quot;less&quot;)</code></p>
+</div>
+</div>
+</div>
+<div class="section level1">
+<h1>4. 参考资料</h1>
+<div class="section level2">
+<h2>4.1 一些检验的参考链接</h2>
+<ul>
+<li><a href="http://onlinelibrary.wiley.com/doi/10.1002/9781118445112.stat06565/abstract"><code>ansari.test</code></a></li>
+<li><a href="http://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm"><code>bartlett.test</code></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Binomial_test"><code>binom.test</code></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Ljung%E2%80%93Box_test"><code>Box.test</code></a></li>
+<li><a href="http://www.r-tutor.com/elementary-statistics/goodness-fit/chi-squared-test-independence"><code>chisq.test</code></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Chi-squared_test"><code>chisq.test</code></a></li>
+<li><a href="http://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html"><code>cor.test</code></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test"><code>fisher.test</code></a></li>
+<li><a href="https://biostats.w.uib.no/test-for-homogeneity-of-variances-levenes-test/"><code>fligner.test</code></a></li>
+<li><a href="http://www.r-tutor.com/elementary-statistics/non-parametric-methods/kruskal-wallis-test"><code>kruskal.test</code></a></li>
+<li><a href="http://www.physics.csbsju.edu/stats/KS-test.html"><code>ks.test</code></a></li>
+<li><a href="http://www.real-statistics.com/non-parametric-tests/moods-median-test-two-samples/"><code>mood.test</code></a></li>
+<li><a href="https://rdrr.io/r/stats/oneway.test.html"><code>oneway.test</code></a></li>
+</ul>
+</div>
+<div class="section level2">
+<h2>4.2 其他网页链接</h2>
+<ul>
+<li><a href="http://blog.minitab.com/blog/understanding-statistics/what-statistical-hypothesis-test-should-i-use" class="uri">http://blog.minitab.com/blog/understanding-statistics/what-statistical-hypothesis-test-should-i-use</a></li>
+<li><a href="https://bloomingtontutors.com/blog/search/query:statistics" class="uri">https://bloomingtontutors.com/blog/search/query:statistics</a></li>
+</ul>
+</div>
+</div>
