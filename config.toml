@@ -767,7 +767,7 @@ uglyURLs = false
     enableHeadingsAnchor = true
 
     # 分节标题的级别范围
-    headingsOpt = "2-4"
+    headingsOpt = "[2-3]"
     # 说明：正则格式，默认 1-6，即 1|2|3|4|5|6，
     #      即 h1 到 h6。
 
