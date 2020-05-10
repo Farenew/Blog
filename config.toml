@@ -1,7 +1,7 @@
 ##########################################
 # 站点配置
 
-baseURL = "https://blog.farenew.com"
+baseURL = "https://blog.farenew.com/"
 title = "Farenew的博客"
 languageCode = "zh-CN"
 hasCJKLanguage = true
