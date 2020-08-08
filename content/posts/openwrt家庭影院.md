@@ -24,7 +24,7 @@ categories: ["计算机"]
 
     ```
     opkg update
-    opkg install block-mount e2fsprogs kmod-usb-storage kmod-usb2 kmod-usb3
+    opkg install block-mount e2fsprogs kmod-usb-core kmod-usb-storage kmod-usb-storage-extras kmod-scsi-core kmod-scsi-generic kmod-usb-storage-uas kmod-usb2 kmod-usb3 
     ```
 
 3. 根据自己需要使用的设备，安装对应的文件系统支持。
@@ -80,6 +80,12 @@ categories: ["计算机"]
     ```
 
     如果这里失败的话，查看文件系统是否支持，前面的安装有没有出问题。
+
+    取消挂载：
+
+    ```
+    umount -l /mnt/mount/
+    ```
 
 8. 进入`/mnt/mount/`目录下查看是否已经挂载
 
