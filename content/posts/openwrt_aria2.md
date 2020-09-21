@@ -8,10 +8,10 @@ categories: ["计算机"]
 安装：
 
 ```
-opkg install aria2 luci-app-aria2 luci-i18n-aria2-zh-cn webui-aria2
+opkg install aria2 luci-app-aria2 webui-aria2
 ```
 
-安装好后再luci下会出现Aria2的服务：
+安装好后在luci下会出现Aria2的服务：
 
 ![](/img/openwrt/Snipaste_2020-08-08_11-36-22.png)
 

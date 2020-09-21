@@ -148,13 +148,15 @@ OpenWrt官方提供了使用教程，参考：https://openwrt.org/docs/guide-use
 
 ```
 opkg update
-opkg install transmission-daemon-openssl
-opkg install transmission-cli-openssl 
-opkg install transmission-web
-opkg install transmission-remote-openssl
+opkg install transmission-daemon-openssl # 必须安装的模块，基础运行模块
+opkg install transmission-cli-openssl # 命令行控制
+opkg install transmission-web # web控制
+opkg install transmission-remote-openssl # 远程控制
 ```
 
-此时transmission应该是没有启用的，我们编辑它的配置文件（在启用后无法编辑配置文件）：
+可以根据自己的需求安装模块
+
+此时transmission应该是没有启用的，我们编辑它的配置文件`/etc/config/transmission`（在启用后无法编辑配置文件）：
 
 这里给出我的配置示例，其中几项重要的需要配置的有：
 
@@ -163,79 +165,77 @@ opkg install transmission-remote-openssl
 - "pex-enabled"：按照PT站点的要求，一定要设置为false
 - "dht-enabled"：按照PT站点的要求，一定要设置为false
 
-```json
-{
-    "alt-speed-down": 50,
-    "alt-speed-enabled": false,
-    "alt-speed-time-begin": 540,
-    "alt-speed-time-day": 127,
-    "alt-speed-time-enabled": false,
-    "alt-speed-time-end": 1020,
-    "alt-speed-up": 50,
-    "bind-address-ipv4": "0.0.0.0",
-    "bind-address-ipv6": "::",
-    "blocklist-enabled": false,
-    "blocklist-url": "http://www.example.com/blocklist",
-    "cache-size-mb": 2,
-    "dht-enabled": false,
-    "download-dir": "/mnt/ntfs/",
-    "download-queue-enabled": false,
-    "download-queue-size": 4,
-    "encryption": 1,
-    "idle-seeding-limit": 30,
-    "idle-seeding-limit-enabled": false,
-    "incomplete-dir": "/mnt/ntfs/incomplete",
-    "incomplete-dir-enabled": false,
-    "invalid-key": false,
-    "lazy-bitfield-enabled": true,
-    "lpd-enabled": false,
-    "message-level": 1,
-    "peer-congestion-algorithm": "",
-    "peer-id-ttl-hours": 6,
-    "peer-limit-global": 240,
-    "peer-limit-per-torrent": 100,
-    "peer-port": 51413,
-    "peer-port-random-high": 65535,
-    "peer-port-random-low": 49152,
-    "peer-port-random-on-start": false,
-    "peer-socket-tos": "default",
-    "pex-enabled": false,
-    "port-forwarding-enabled": false,
-    "preallocation": 1,
-    "prefetch-enabled": true,
-    "queue-stalled-enabled": true,
-    "queue-stalled-minutes": 30,
-    "ratio-limit": 2,
-    "ratio-limit-enabled": false,
-    "rename-partial-files": true,
-    "rpc-authentication-required": false,
-    "rpc-bind-address": "0.0.0.0",
-    "rpc-enabled": true,
-    "rpc-host-whitelist": "127.0.0.1,192.168.1.*",
-    "rpc-host-whitelist-enabled": false,
-    "rpc-password": "{957137008a6a7931771462e8d36eae59dff8dcfdnPRlD8r9",
-    "rpc-port": 9091,
-    "rpc-url": "/transmission/",
-    "rpc-username": "",
-    "rpc-whitelist": "127.0.0.1,192.168.1.*",
-    "rpc-whitelist-enabled": false,
-    "scrape-paused-torrents-enabled": true,
-    "script-torrent-done-enabled": false,
-    "script-torrent-done-filename": "",
-    "seed-queue-enabled": false,
-    "seed-queue-size": 10,
-    "speed-limit-down": 100,
-    "speed-limit-down-enabled": false,
-    "speed-limit-up": 20,
-    "speed-limit-up-enabled": false,
-    "start-added-torrents": true,
-    "trash-original-torrent-files": false,
-    "umask": 18,
-    "upload-slots-per-torrent": 14,
-    "utp-enabled": true,
-    "watch-dir-enabled": false
-}
-
+```
+config transmission                              
+        option config_dir '/tmp/transmission'    
+        option config_overwrite '1'              
+        option user 'transmission'               
+        option group 'transmission'              
+        option mem_percentage '50'               
+        option nice '10'                          
+        option alt_speed_down '50'                
+        option alt_speed_enabled 'false'          
+        option alt_speed_time_begin '540'                
+        option alt_speed_time_day '127'                  
+        option alt_speed_time_enabled 'false'            
+        option alt_speed_time_end '1020'                 
+        option alt_speed_up '50'                         
+        option bind_address_ipv4 '0.0.0.0'               
+        option bind_address_ipv6 '::'                    
+        option blocklist_enabled 'false'                 
+        option cache_size_mb '2'                         
+        option dht_enabled 'false'                       
+        option download_dir '/mnt/ntfs'                  
+        option download_queue_enabled 'true'             
+        option download_queue_size '4'                   
+        option encryption '1'                            
+        option idle_seeding_limit '30'                   
+        option idle_seeding_limit_enabled 'false'        
+        option incomplete_dir '/mnt/ntfs'                
+        option incomplete_dir_enabled 'false'            
+        option lazy_bitfield_enabled 'true'              
+        option lpd_enabled 'false'                       
+        option message_level '1'                         
+        option peer_limit_global '240'                   
+        option peer_limit_per_torrent '60' 
+        option peer_port '51413'                 
+        option peer_port_random_high '65535'     
+        option peer_port_random_low '49152'      
+        option peer_port_random_on_start 'false' 
+        option peer_socket_tos 'default'         
+        option pex_enabled 'false'               
+        option port_forwarding_enabled 'true'    
+        option preallocation '1'                  
+        option prefetch_enabled 'true'            
+        option queue_stalled_enabled 'true'       
+        option queue_stalled_minutes '30'                
+        option ratio_limit '2.0000'                      
+        option ratio_limit_enabled 'false'               
+        option rename_partial_files 'true'               
+        option rpc_authentication_required 'false'       
+        option rpc_bind_address '0.0.0.0'                
+        option rpc_enabled 'true'                        
+        option rpc_host_whitelist '127.0.0.1,192.168.1.*'
+        option rpc_host_whitelist_enabled 'false'        
+        option rpc_port '9091'                           
+        option rpc_url '/transmission/'                  
+        option rpc_whitelist '127.0.0.1,192.168.1.*'     
+        option rpc_whitelist_enabled 'false'             
+        option scrape_paused_torrents_enabled 'true'     
+        option script_torrent_done_enabled 'false'       
+        option seed_queue_enabled 'false'                
+        option seed_queue_size '10'                      
+        option speed_limit_down '100'                    
+        option speed_limit_down_enabled 'false'          
+        option speed_limit_up '20'                       
+        option speed_limit_up_enabled 'false'            
+        option start_added_torrents 'true'               
+        option trash_original_torrent_files 'false'
+        option umask '18'                                
+        option upload_slots_per_torrent '14'             
+        option utp_enabled 'true'                        
+        option scrape_paused_torrents 'true'             
+        option watch_dir_enabled 'false'                 
 ```
 
 然后启动：
