@@ -22,7 +22,7 @@ jobs:
       - name: hugo generate
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: cd ${{ secrets.PATH }} && hugo server
+          command: cd ${{ secrets.PATH }} && hugo
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privateKey: ${{ secrets.PRIVATE_KEY }}
