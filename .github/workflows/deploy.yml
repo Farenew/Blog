@@ -1,0 +1,24 @@
+name: deploy blog
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: rsync deployment
+        uses: burnett01/rsync-deployments@4.1
+        with: 
+          switches: -avr --delete
+          path: src/
+          remote_path: ${{ secrets.PATH }}
+          remote_host: ${{ secrets.HOST }}
+          remote_user: ${{ secrets.USER }}
+          remote_key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: hugo generate
+        run: cd ${{ secrets.PATH }}
+        run: hugo server
