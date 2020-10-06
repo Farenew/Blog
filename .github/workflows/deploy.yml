@@ -12,13 +12,19 @@ jobs:
       - name: rsync deployment
         uses: burnett01/rsync-deployments@4.1
         with: 
-          switches: -avr --delete
-          path: src/
+          switches: -avr
+          path: /
           remote_path: ${{ secrets.PATH }}
           remote_host: ${{ secrets.HOST }}
           remote_user: ${{ secrets.USER }}
           remote_key: ${{ secrets.PRIVATE_KEY }}
 
       - name: hugo generate
-        run: cd ${{ secrets.PATH }}
-        run: hugo server
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd ${{ secrets.PATH }} && hugo
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          privateKey: ${{ secrets.PRIVATE_KEY }}
+
+
