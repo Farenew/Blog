@@ -12,7 +12,7 @@ jobs:
       - name: rsync deployment
         uses: burnett01/rsync-deployments@4.1
         with: 
-          switches: -avr
+          switches: -avr --delete
           path: /
           remote_path: ${{ secrets.PATH }}
           remote_host: ${{ secrets.HOST }}
