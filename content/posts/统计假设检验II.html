@@ -7,9 +7,6 @@ tags: ["理论"]
 categories: ["数学"]
 
 math: true
-
-slug: statistical_hypothesis_testing_II
-
 ---
 
 
@@ -45,7 +42,7 @@ slug: statistical_hypothesis_testing_II
 </ul>
 <p>这里用一张图，来说明一下常用的检验的一般流程。</p>
 <div id="proceduce_in_test" class="section level2">
-<h2><img src="/img/programming/test_procedure.jpg" alt="proceduce_in_test" /></h2>
+<h2><img src="/img/统计假设检验/test_procedure.jpg" alt="proceduce_in_test" /></h2>
 </div>
 </div>
 <div class="section level1">
@@ -79,7 +76,7 @@ t.test(x, mu = 500, alternative = &quot;less&quot;)</code></pre>
 ##  498.3472</code></pre>
 <p>这里t值为<span class="math inline">\(-2.6962\)</span>，而p值为<span class="math inline">\(0.004793\)</span>，如果选择显著性水平(<span class="math inline">\(\alpha\)</span>)为0.005，那么拒绝错误的概率为0.005。这是个很小的概率，属于小概率事件。</p>
 <p>对于这个例子来说，也就是说，认为产品均值小于500g犯错的概率为0.005，也就是说认为产品均值小于500g基本上是没错的。</p>
-<p>在图中看一下t值的位置: <img src="/programming/statistical_hypothesis_testing_II_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>在图中看一下t值的位置: <img src="/img/统计假设检验/unnamed-chunk-2-1.png" width="672" /></p>
 <p>可以看出来，t统计量取值在一个非常小概率的位置。左侧尾概率是一个小概率。</p>
 </div>
 <div class="section level3">

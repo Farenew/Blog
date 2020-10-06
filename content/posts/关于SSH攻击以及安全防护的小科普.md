@@ -29,7 +29,7 @@ categories: ["计算机"]
 
 这就很奇怪了，但是听说在某些情况ping（ICMP协议）不会被阻断，但TCP会被阻断。于是我去找了一款[tcping工具](https://github.com/cloverstd/tcping)来测试tcping连接，然后发现tcping也稳如老狗.....
 
-![](/img/ssh_attack/Snipaste_2020-07-29_17-22-42.png)
+![](/img/关于SSH攻击以及安全防护的小科普/Snipaste_2020-07-29_17-22-42.png)
 
 这就很迷惑了，于是我看了下SSH连接的详细信息，发现卡在了`SSH2_MSG_KEXINIT`这一步，大概就是服务器那边不给响应。就很奇怪，服务器工作正常，为什么不响应我的连接请求呢？~~难道是因为哥长得帅？~~
 

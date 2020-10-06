@@ -4,8 +4,6 @@ title: 统计假设检验(statistical hypothesis testing) I
 author: ForenewHan
 tags: ["理论"]
 categories: ["数学"]
-slug: statistical_hypothesis_testing
-
 ---
 
 
@@ -95,7 +93,7 @@ slug: statistical_hypothesis_testing
 <div class="section level2">
 <h2>3.1 第一类错误的概率</h2>
 <p><span class="math inline">\(\alpha\)</span>值指的是犯第一类错误的概率, 这个值也被称为是<strong>显著性水平(significant level)</strong>. 这个值是在样本收集前指定的, 根据不同的问题可以指定不同的<span class="math inline">\(\alpha\)</span>值。 最常用的<span class="math inline">\(\alpha=0.05\)</span>. 因为<span class="math inline">\(\alpha\)</span>表示在<code>零假设</code>为真的情况下拒绝<code>零假设</code>的概率, 而当<code>零假设</code>为真的时候, 只有样本值显著与<code>零假设</code>有差异, 才会拒绝<code>零假设</code>, 也就是说, <span class="math inline">\(\alpha\)</span>表示了在概率分布中最靠外的地方. 因此就有以下三种情况:</p>
-<p><img src="/programming/statistical_hypothesis_testing_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="/img/统计假设检验/unnamed-chunk-1-1.png" width="672" /></p>
 <p>对于图中灰色的部分, 称为临界域(critical region, 也叫<span class="math inline">\(\alpha\;region\)</span>), 如果样本的值落入了这一区域, 那么就称这一结果<strong>统计显著(statistical significant)</strong>. 注意统计显著并不一定等价于实际显著. 例如, 在统计学上可以发现, 男性和女性的IQ并不相同, 但统计学的结果是否足以证明有实际的应用呢?</p>
 <p>由于统计学显著的大量使用, 对于它的争议也逐渐产生, 特别是对于统计学显著和实际显著的区别. 参见<a href="https://en.wikipedia.org/wiki/Statistical_significance#Challenges">wikipedia的讨论</a></p>
 </div>
@@ -120,7 +118,7 @@ slug: statistical_hypothesis_testing
 <p>当<span class="math inline">\(Pr(p\leq \alpha | H)\)</span>时, 拒绝零假设. 所以有: <span class="math display">\[ Pr(Reject \; H) = Pr(p\leq \alpha | H) = \alpha \]</span></p>
 <p>那么问题就来了, 既然有了<span class="math inline">\(\alpha\)</span>了, 为什么还需要引<code>入P-value</code>呢. 这是因为<code>p值</code>可以更准确地提高显著性水平.</p>
 <p>例如, 在<span class="math inline">\(\alpha = 0.05\)</span>的情况下, 得到的<code>p值</code>为0.02, 很显然, 观测数据落入了临界域, 统计学显著地可以拒绝零假设. 然而注意! 这时候<strong>犯第一类错误的概率仍然为5%!</strong> <strong>因为指定了<span class="math inline">\(\alpha\)</span>为0.05!</strong> 而如果<strong>使用p值作为新的显著性水平</strong>, 那么就可以说, 在显著性水平为0.02时, 拒绝零假设. 这样我们就把犯第一类错误的概率降低到了2%. 通过图来直观地说明这个问题:</p>
-<p><img src="/programming/statistical_hypothesis_testing_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/img/统计假设检验/unnamed-chunk-1-2.png" width="672" /></p>
 <p>假设数据分布为正态分布，<span class="math inline">\(H_0: \mu = 5\)</span> , 在做了样本调查后，提出<span class="math inline">\(H_1: \mu &gt; 5\)</span>.</p>
 <p>样本中<span class="math inline">\(\mu = 7.053749\)</span>, 使用<code>pnorm</code>求得，此时的概率p为0.02. 落入了<span class="math inline">\(\alpha\; region\)</span>。这里也可以说，在显著性水平为0.02时，拒绝零假设。</p>
 <p>通过<code>p值</code>，相当于在有了<span class="math inline">\(\alpha\)</span>作为参考的情况下，进一步提高了结果的准确性。因此<strong>p值又称为观测的显著性水平(obeserved significant level)</strong>，在统计学软件上，往往输出<code>p值</code>而不输出<span class="math inline">\(\alpha\)</span>，因为<span class="math inline">\(\alpha\)</span>是根据不同问题自行决定的。</p>

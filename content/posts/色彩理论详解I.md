@@ -15,7 +15,7 @@ categories: ["研究"]
 
 学过基础物理的都知道，光是一种波，同时也是一种粒子，称之为波粒二象性。从波的角度来看，光是电磁频谱内的某一部分的电磁辐射。电磁波主要的一个性质就是波长(或者是频率，二者可以在光速常数$c$下互相转换)。对于可见光来讲，大概也就是400~700nm波长的电磁辐射。
 
-![](/img/science/ColorTheory/1.png)
+![](/img/色彩理论详解I/1.png)
 
 从这个图很容易理解，不同波长的光构成了不同的颜色。然而光靠这个可以描述我们所能看到的各种颜色吗? 恐怕不行。首先，这里面就没有一种最常见的颜色----白色。说到这里，可以很容易地就想到了，不光要靠不同波长的颜色，同时，还需要不同波长的颜色相互组合。那么加上不同波长的光相互组合就够了吗? 恐怕也不行，那么那些熟悉的词，像是饱和度，明度，亮度都又是怎么回事呢? 这里就来详细介绍一下。
 
@@ -33,7 +33,7 @@ RGB指的是Red，Green and Blue，这个想必也是大部分人最熟悉的关
 
 在Photoshop中，常用的都是8位的色彩，在新建图像的时候就可以确定。8位指的是单一色彩的值，"位"这个词相比很容易就想到2进制，确实如此，8位就表示了2的8次幂，也就是从0~255共256个数字。
 
-![](/img/science/ColorTheory/2.png)
+![](/img/色彩理论详解I/2.png)
 
 所以在RGB中的调节，每个光原色都有256个值，如果是黑色，那么就是三种光都不发，RGB(0,0,0)，如果是白色，那么就是三种光都最强，RGB(255,255,255)。而其它强度的光相互组合，就生成了RGB这个色域空间。
 
@@ -46,7 +46,7 @@ RGB指的是Red，Green and Blue，这个想必也是大部分人最熟悉的关
 
 此外，还会经常听到一个词就是sRGB，所谓的sRGB，是早期为了表示通过显像管来显示图像时的一种标准，由HP和Microsoft共同开发，并得到了广泛的支持，多广泛呢? 几乎你在所有的显示器，无论是电脑显示器，还是照相机显示器，还是手机显示器，基本都是基于这套标准。如果你是一个geek or something，你也许曾经点开过这个：
 
-![](/img/science/ColorTheory/3.png)
+![](/img/色彩理论详解I/3.png)
 
 从这里就可以看到计算机使用的便是sRGB。Microsoft面向设计师推出的Surface Studio，就是把更换色彩配置文件加了一个快捷键。比如切换成Adobe RGB。
 
@@ -61,7 +61,7 @@ RGB指的是Red，Green and Blue，这个想必也是大部分人最熟悉的关
 
 这个模型最早是Munsell在1930s提出的，他提出的这个color model既在科学上反映了人眼对于色彩的感知，同时也方便用在艺术，设计等方面的创作和教学，是一项跨时代的重大创造。后来对人眼的进一步研究以及色彩的理解，国际照明委员会(International Commission on Illumination，CIE)提出来更加先进的CIELAB(即phtoshop里的Lab)以及CIECAM02.
 
-![](/img/science/ColorTheory/Munsell-system.svg)
+![](/img/色彩理论详解I/Munsell-system.svg)
 
 从这张图可以看出来，在Munsell提出来的时候，使用了Hue，Chroma和Value三个值来表示颜色，在Hue中，他提出了五种基础的Hue，分别是Red, Yellow, Green, Blue, and Purple，还有一个中间色YR(Yellow Red)。
 
@@ -73,13 +73,13 @@ RGB指的是Red，Green and Blue，这个想必也是大部分人最熟悉的关
 
 HSL            |  HSV
 :---:|:---:
-![](/img/science/ColorTheory/4.png)  |  ![](/img/science/ColorTheory/5.png)
+![](/img/色彩理论详解I/4.png)  |  ![](/img/色彩理论详解I/5.png)
 
 如果对交换后两个坐标，那么就可以绘制成圆锥和双锥：
 
 HSL            |  HSV
 :---:|:---:
-![](/img/science/ColorTheory/6.png)  |  ![](/img/science/ColorTheory/7.png)
+![](/img/色彩理论详解I/6.png)  |  ![](/img/色彩理论详解I/7.png)
 
 可以看出来，在HSV中，V达到最大值(最大值为1)的时候，得到了纯色，而在HSL中，只要L达到最大(最大值是100%)，那么一定是白色。
 
@@ -226,7 +226,7 @@ Magenta+Yellow | Green&Blue | Red
 
 Halftone说起来很简单, 既然我们不能给油墨加水来获得不同程度的颜色, 那么我们就**在打印的时候选择多打印或者少打印来体现色彩的变化**, 在高的分辨率下, 人眼是无法识别出这种多少的变化而是会当做不同的颜色处理的。直接用一张图就能很容易地说明了：
 
-![](/img/science/ColorTheory/Halftoning_introduction.svg)
+![](/img/色彩理论详解I/Halftoning_introduction.svg)
 
 此外, 在实际打印中, CMYK在打印的时候会改变打印角度, 来进一步提升打印质量并且减少莫尔条纹。这部分内容就涉及过多的印刷知识了, 不多介绍了。
 

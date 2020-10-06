@@ -13,8 +13,8 @@ opkg install aria2 luci-app-aria2 webui-aria2
 
 安装好后在luci下会出现Aria2的服务：
 
-![](/img/openwrt/Snipaste_2020-08-08_11-36-22.png)
+![](/img/在openwrt上安装aria2/Snipaste_2020-08-08_11-36-22.png)
 
 点进去可以看到配置，点击`WebUI-Aria2`即可进入web配置界面：
 
-![](/img/openwrt/Snipaste_2020-08-08_11-38-08.png)
+![](/img/在openwrt上安装aria2/Snipaste_2020-08-08_11-38-08.png)
