@@ -188,12 +188,12 @@ uglyURLs = false
         weight = 1
         pre = "internal"
         post = "archive"
-    [[menu.main]]
-        url = "/record/"
-        name = "摘录记录"
-        weight = 2
-        pre = "internal"
-        post = "calendar-alt"
+    # [[menu.main]]
+    #     url = "/record/"
+    #     name = "摘录记录"
+    #     weight = 2
+    #     pre = "internal"
+    #     post = "calendar-alt"
     [[menu.main]]
         url = "/categories/"
         name = "分类"
