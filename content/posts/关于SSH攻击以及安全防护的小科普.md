@@ -247,7 +247,7 @@ ufw reload
     例如允许`192.168.0.1`用任何协议访问22端口：
 
     ```
-    ufw allow 192.168.0.1 to any port 22
+    ufw allow 192.168.## 0.1 @@to any port 22
     ```
 
     如果需要协议，就在后面增加协议：
@@ -259,7 +259,7 @@ ufw reload
     例如：
 
     ```
-    ufw allow 192.168.0.1 to any port 22 proto tcp
+    ufw allow 192.168.## 0.1 @@to any port 22 proto tcp
     ```
 
 
